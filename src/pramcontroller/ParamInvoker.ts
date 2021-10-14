@@ -28,7 +28,7 @@ export class ParamInvoker {
   range?: [number];
 
 
-  genInject2VtsReq(value: number): Array<InjectParamValue> {
+  genInject2VtsReq(value: number|string|boolean): Array<InjectParamValue> {
     const injectParamValues: Array<InjectParamValue> = [];
 
     function apply(paramId: string, value: number, weight?: number) {
@@ -39,12 +39,8 @@ export class ParamInvoker {
     return injectParamValues;
   }
 
-  inject2Vts(value: number) {
-
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  genInject2VtsReqFromUser: (apply: (paramId: string, value: number, weight?: number) => void, value: number) => void;
+  genInject2VtsReqFromUser: (apply: (paramId: string, value: number, weight?: number) => void, value: number|boolean|string) => void;
 
 
   constructor(req: ParamInvokerCreateReq, viewInfo: ParamInvokerViewInfo) {

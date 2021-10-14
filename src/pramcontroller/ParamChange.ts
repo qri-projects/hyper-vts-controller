@@ -6,8 +6,8 @@ export class ParamChange {
   value = 0;
   weight = 1
   
-  changeWithUpper = (upperValue: number): number => {
-    return upperValue;
+  changeWithUpper = (upperValue: number|string|boolean): number => {
+    return 0;
   }
 
   changeValue(value: number) {

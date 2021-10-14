@@ -54,7 +54,7 @@ export class ParamInvokerCreateReq {
 }
 
 export enum ParamInvokerButtonType {
-  SWITCH, INPUT, SLIDER, SELECTOR
+  SWITCH, RADIO, SELECTOR, SLIDER, INPUT
 }
 
 export class ParamInvokerViewInfo {
@@ -73,5 +73,11 @@ export class ParamInvokerViewInfo {
 
   static genSwitch(): ParamInvokerViewInfo {
     return new ParamInvokerViewInfo(ParamInvokerButtonType.SWITCH);
+  }
+
+  static genRadio(options: Array<string>): ParamInvokerViewInfo {
+    const res = new ParamInvokerViewInfo(ParamInvokerButtonType.RADIO);
+    res.options = options;
+    return res
   }
 }

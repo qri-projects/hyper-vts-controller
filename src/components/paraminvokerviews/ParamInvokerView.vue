@@ -1,18 +1,27 @@
 <template>
-  <ElSwitch v-if="isSwitch(paramInvoker.viewInfo.buttonType)" @change="onChange" v-model="value"></ElSwitch>
+  <ElSwitch v-if="paramInvoker.viewInfo.buttonType === 0" @change="onChange" v-model="value"></ElSwitch>
+  <ElRadioGroup v-if="paramInvoker.viewInfo.buttonType === 1" v-model="value" @change="onChange">
+    <elRadio v-for="option in paramInvoker.viewInfo.options" :label="option">{{ option }}</elRadio>
+  </ElRadioGroup>
+  <ElOption v-if="paramInvoker.viewInfo.buttonType === 2"></ElOption>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { ElSwitch } from "element-plus";
+import { ElSwitch, ElRadio, ElOption, ElSelect } from "element-plus";
 import { ParamInvoker } from "@/pramcontroller/ParamInvoker";
 import { ParamInvokerButtonType } from '@/pramcontroller/createreq/CreateReq';
-import { VtsPlugin } from "@/vtssdk/VtsPlugin";
-import { InjectParamReq } from "@/vtssdk/VtsDto";
+import { initVtsPlugin, LockParamLoopManager } from "@/pramcontroller/VtsManager";
+import { WebSocketBus, ApiClient, Plugin } from "vtubestudio";
+import { ref } from 'vue'
+import { Ref, UnwrapRef } from "@vue/reactivity";
 
 @Options({
   components: {
     ElSwitch,
+    ElRadio,
+    ElOption,
+    ElSelect
   },
   props: {
     "paramInvoker": ParamInvoker
@@ -20,27 +29,20 @@ import { InjectParamReq } from "@/vtssdk/VtsDto";
 })
 export default class ParamInvokerView extends Vue {
   paramInvoker!: ParamInvoker
-  value: boolean = false
-  vts?: VtsPlugin
+  value:Ref<UnwrapRef<string|boolean|number>> = ref(1)
+  vts?: Plugin
 
   async created() {
-
-    this.vts = await VtsPlugin.connect("ws://localhost:8001", "111", "qri", undefined, undefined)
+    this.vts = await initVtsPlugin()
+    LockParamLoopManager.startSetParamLoop()
   }
 
-  onChange(value: boolean): boolean {
-    console.log(this.value)
-    const numberValue: number = value as unknown as number;
-    let reqStr = this.paramInvoker.genInject2VtsReq(numberValue);
-    console.log(reqStr);
-    this.vts?.injectParam(new InjectParamReq(reqStr))
-    return value;
+  onChange(value: number|boolean|string) {
+    console.log(value);
+    let req = this.paramInvoker.genInject2VtsReq(value);
+    LockParamLoopManager.setLockParam(this.paramInvoker, req)
+    this.vts?.apiClient.injectParameterData({ parameterValues: req })
   }
-
-  isSwitch(v: ParamInvokerButtonType) {
-    return v === ParamInvokerButtonType.SWITCH
-  }
-
 }
 </script>
 

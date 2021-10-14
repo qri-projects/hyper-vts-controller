@@ -10202,6 +10202,11 @@ vm-browserify@^1.0.1:
   resolved "https://registry.nlark.com/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
 
+vtubestudio@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/vtubestudio/-/vtubestudio-1.6.0.tgz#dd9d0c14cbb041ea3666e7cfa2d42a9697b358b0"
+  integrity sha512-ufMO6sqkSGiXBy/sDcg6VDfIuyKZ1Fbfpkn7Ph8FeJauECn76ymGzyrEYz/9hqQ3/II1SV5uHWxKawh+KmLYOg==
+
 vue-class-component@^8.0.0-0:
   version "8.0.0-rc.1"
   resolved "https://registry.nlark.com/vue-class-component/download/vue-class-component-8.0.0-rc.1.tgz#db692cd97656eb9a08206c03d0b7398cdb1d9420"
