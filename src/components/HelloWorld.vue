@@ -1,5 +1,5 @@
 <template>
-  <CustomParamView></CustomParamView>
+  <ConfigurationView />
   <ParamInvokerView :param-invoker="paramInvoker">123</ParamInvokerView>
 </template>
 
@@ -12,8 +12,7 @@ import CustomParamView from "@/components/customparamviews/CustomParamView.vue";
 
 @Options({
   components: {
-    ParamInvokerView,
-    CustomParamView
+    ParamInvokerView
   }
 })
 export default class HelloWorld extends Vue {
