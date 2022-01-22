@@ -1,7 +1,7 @@
 <template>
   <ElSwitch v-if="paramInvoker.viewInfo.buttonType === 0" @change="onChange" v-model="value"></ElSwitch>
   <ElRadioGroup v-if="paramInvoker.viewInfo.buttonType === 1" v-model="value" @change="onChange">
-    <elRadio v-for="option in paramInvoker.viewInfo.options" :label="option">{{ option }}</elRadio>
+    <ElRadio v-for="(option, key) in paramInvoker.viewInfo.options" :key="`${paramInvoker.name}-${key}`" :label="option">{{ option }}</ElRadio>
   </ElRadioGroup>
   <ElOption v-if="paramInvoker.viewInfo.buttonType === 2"></ElOption>
 </template>
@@ -9,7 +9,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { ElSwitch, ElRadio, ElOption, ElSelect } from "element-plus";
-import { ParamInvoker } from "@/pramcontroller/ParamInvoker";
+import { InjectParamValue, ParamInvoker } from "@/pramcontroller/ParamInvoker";
 import { ParamInvokerButtonType } from '@/pramcontroller/createreq/CreateReq';
 import { initVtsPlugin, LockParamLoopManager } from "@/pramcontroller/VtsManager";
 import { WebSocketBus, ApiClient, Plugin } from "vtubestudio";
@@ -24,7 +24,7 @@ import { Ref, UnwrapRef } from "@vue/reactivity";
     ElSelect
   },
   props: {
-    "paramInvoker": ParamInvoker
+    "paramInvoker": ParamInvoker,
   }
 })
 export default class ParamInvokerView extends Vue {
@@ -39,9 +39,11 @@ export default class ParamInvokerView extends Vue {
 
   onChange(value: number|boolean|string) {
     console.log(value);
-    let req = this.paramInvoker.genInject2VtsReq(value);
+    let req: Array<InjectParamValue> = this.paramInvoker.genInject2VtsReq(value);
     LockParamLoopManager.setLockParam(this.paramInvoker, req)
-    this.vts?.apiClient.injectParameterData({ parameterValues: req })
+    if (req != null && req.length > 0) {
+      this.vts?.apiClient.injectParameterData({ parameterValues: req })
+    }
   }
 }
 </script>

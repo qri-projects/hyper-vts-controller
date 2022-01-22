@@ -16,7 +16,7 @@ export async function initVtsPlugin(): Promise<Plugin> {
     })
   }
   return new Promise<Plugin>((resolve, reject) => {
-    const webSocket = new WebSocket("ws://localhost:8001");
+    const webSocket = new WebSocket("ws://localhost:8002");
 
     webSocket.onopen = function(ev: Event) {
       const bus = new WebSocketBus(webSocket);
@@ -50,7 +50,13 @@ export class LockParamLoopManager {
       if (req.length > 0) {
         plugin.apiClient.injectParameterData({ parameterValues: req });
       }
-    }, 50);
+
+      req.forEach(v => {
+        if (v.id == "ParamAngleX0") {
+          console.log("ParamAngleX0: " + v.value)
+        }
+      })
+    }, 66);
   }
 
   static setLockParam(

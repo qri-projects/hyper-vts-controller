@@ -7,7 +7,7 @@ import {
 } from "@/pramcontroller/createreq/CreateReq";
 
 // todo: 引入sdk后删除
-class InjectParamValue {
+export class InjectParamValue {
   id: string;
   value: number;
   weight?: number;
