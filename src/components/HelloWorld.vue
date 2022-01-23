@@ -1,25 +1,31 @@
 <template>
-  <CustomParamView></CustomParamView>
-  <ParamInvokerView :param-invoker="paramInvoker">123</ParamInvokerView>
-<!--  <ParamInvokerView :param-invoker="paramInvoker2">456</ParamInvokerView>-->
+  <Header></Header>
+  <ConfigurationView />
+  <ParamInvokersHolder></ParamInvokersHolder>
+  <!--  <ParamInvokerView :param-invoker="paramInvoker">123</ParamInvokerView>-->
+  <!--  <ParamInvokerView :param-invoker="paramInvoker2">456</ParamInvokerView>-->
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import { ParamInvoker } from "@/pramcontroller/ParamInvoker";
 import ParamInvokerView from "./paraminvokerviews/ParamInvokerView.vue";
-import { ChangeControlType, ParamInvokerCreateReq, ParamInvokerViewInfo } from "@/pramcontroller/createreq/CreateReq";
-import CustomParamView from "@/components/customparamviews/CustomParamView.vue";
+import { ChangeControlType, ParamInvokerData, ParamInvokerViewInfo } from "@/pramcontroller/createreq/CreateReq";
+import CustomParamView from "@/components/configurationsviews/tabs/customparam/CustomParamView.vue";
+import Header from "@/components/header/Header.vue";
+import store from "@/store/store";
+import ParamInvokersHolder from "@/components/paraminvokerviews/ParamInvokersHolder.vue";
 
 @Options({
   components: {
     ParamInvokerView,
-    CustomParamView
+    ParamInvokersHolder,
+    Header
   }
 })
 export default class HelloWorld extends Vue {
-  paramInvoker: ParamInvoker = new ParamInvoker(new ParamInvokerCreateReq("name", "desc", ChangeControlType.METHOD_STRING,
-      `{
+  paramInvoker111: ParamInvoker = new ParamInvoker(new ParamInvokerData("name", "desc", ChangeControlType.METHOD_STRING,
+    ParamInvokerViewInfo.genRadio(["睡裙", "水手服", "法师服", "default"]), `{
   let bodyAngleX0 = 0
   let mouthOpen = 0
   let mouthSmile = 1
@@ -50,15 +56,12 @@ export default class HelloWorld extends Vue {
     apply('ParamVV', paramVV)
     apply('ParamFuFu', paramFuFu)
   }
-}`),
-    ParamInvokerViewInfo.genRadio(["睡裙", "水手服", "法师服", "default"])
-  );
+}`));
 
-  paramInvoker2: ParamInvoker = new ParamInvoker(new ParamInvokerCreateReq("name", "desc", ChangeControlType.METHOD_STRING,
-      `{
+  paramInvoker2: ParamInvoker = new ParamInvoker(new ParamInvokerData("name", "desc", ChangeControlType.METHOD_STRING,
+    ParamInvokerViewInfo.genRadio(["睡裙", "水手服", "法师服", "default"]),
+    `{
   let bodyAngleX0 = 0
-
-  let de = false;
 
   if (value === "睡裙") {
     bodyAngleX0 = -30;
@@ -66,19 +69,16 @@ export default class HelloWorld extends Vue {
     bodyAngleX0 = 30;
   } else if(value === "水手服") {
     bodyAngleX0 = 0
-  } else {
-    de = true;
   }
 
-  if (!de) {
+  if (bodyAngleX0 !== 0) {
     apply('ParamAngleX0', bodyAngleX0);
   }
-}`),
-    ParamInvokerViewInfo.genRadio(["睡裙", "水手服", "法师服", "default"])
-  );
+}`));
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
 </style>

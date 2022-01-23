@@ -23,7 +23,7 @@ export enum ChangeControlType {
   PARAM_CHANGE_ASSEMBLE
 }
 
-export class ParamInvokerCreateReq {
+export class ParamInvokerData {
   // 名称
   name: string;
   // 备注
@@ -34,27 +34,36 @@ export class ParamInvokerCreateReq {
   genApplyValueCommandString?: string;
   // Param组装
   paramChangeCreateReqs?: Array<ParamChangeCreateReq>;
+  paramInvokerViewInfo: ParamInvokerViewInfo;
+  value: number|string|boolean = 0
 
 
-  constructor(name: string, desc: string, changeControlType: ChangeControlType, genApplyValueCommandString?: string, paramChangeCreateReqs?: Array<ParamChangeCreateReq>) {
-    this.name = name;
-    this.desc = desc;
-    this.changeControlType = changeControlType;
-    this.genApplyValueCommandString = genApplyValueCommandString;
-    this.paramChangeCreateReqs = paramChangeCreateReqs;
+  constructor(name: string,
+              desc: string,
+              changeControlType: ChangeControlType,
+              paramInvokerViewInfo: ParamInvokerViewInfo,
+              genApplyValueCommandString?: string,
+              paramChangeCreateReqs?: Array<ParamChangeCreateReq>,
+              value?: number|string|boolean) {
+    this.name = name
+    this.desc = desc
+    this.changeControlType = changeControlType
+    this.genApplyValueCommandString = genApplyValueCommandString
+    this.paramChangeCreateReqs = paramChangeCreateReqs
+    this.paramInvokerViewInfo = paramInvokerViewInfo
+    this.value = value ?? paramInvokerViewInfo.defaultValue
   }
 
-  static genWithMethodString(name: string, desc: string, genApplyValueCommandString: string): ParamInvokerCreateReq {
-    return new ParamInvokerCreateReq(name, desc, ChangeControlType.METHOD_STRING, genApplyValueCommandString, undefined);
-  }
-
-  static genWithParamChangeAssemble(name: string, desc: string, paramChangeCreateReqs: [ParamChangeCreateReq]): ParamInvokerCreateReq {
-    return new ParamInvokerCreateReq(name, desc, ChangeControlType.PARAM_CHANGE_ASSEMBLE, undefined, paramChangeCreateReqs);
+  static newEmpty() {
+    return new ParamInvokerData("", "", ChangeControlType.METHOD_STRING,
+      new ParamInvokerViewInfo(ParamInvokerButtonType.RADIO, 0, 0, new Array<string>()),
+      "", undefined
+    )
   }
 }
 
 export enum ParamInvokerButtonType {
-  SWITCH, RADIO, SELECTOR, SLIDER, INPUT
+  RADIO, SLIDER, INPUT
 }
 
 export class ParamInvokerViewInfo {
@@ -62,17 +71,15 @@ export class ParamInvokerViewInfo {
   valueRangeStart?: number;
   valueRangeEnd?: number;
   options?: Array<string>;
+  defaultValue: number | string | boolean
 
 
-  constructor(buttonType: ParamInvokerButtonType, valueRangeStart?: number, valueRangeEnd?: number, options?: Array<string>) {
+  constructor(buttonType: ParamInvokerButtonType, valueRangeStart?: number, valueRangeEnd?: number, options?: Array<string>, defaultValue = 0) {
     this.buttonType = buttonType;
     this.valueRangeStart = valueRangeStart;
     this.valueRangeEnd = valueRangeEnd;
     this.options = options;
-  }
-
-  static genSwitch(): ParamInvokerViewInfo {
-    return new ParamInvokerViewInfo(ParamInvokerButtonType.SWITCH);
+    this.defaultValue = defaultValue
   }
 
   static genRadio(options: Array<string>): ParamInvokerViewInfo {

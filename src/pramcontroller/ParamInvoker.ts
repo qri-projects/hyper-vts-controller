@@ -2,7 +2,7 @@ import { ParamChange } from "@/pramcontroller/ParamChange";
 import {
   ChangeControlType,
   ParamChangeCreateReq,
-  ParamInvokerCreateReq,
+  ParamInvokerData,
   ParamInvokerViewInfo
 } from "@/pramcontroller/createreq/CreateReq";
 
@@ -21,12 +21,8 @@ export class InjectParamValue {
 
 export class ParamInvoker {
   name: string;
-  viewInfo: ParamInvokerViewInfo;
-
+  paramInvokerViewInfo: ParamInvokerViewInfo;
   desc?: string;
-  options?: [number];
-  range?: [number];
-
 
   genInject2VtsReq(value: number|string|boolean): Array<InjectParamValue> {
     const injectParamValues: Array<InjectParamValue> = [];
@@ -43,16 +39,18 @@ export class ParamInvoker {
   genInject2VtsReqFromUser: (apply: (paramId: string, value: number, weight?: number) => void, value: number|boolean|string) => void;
 
 
-  constructor(req: ParamInvokerCreateReq, viewInfo: ParamInvokerViewInfo) {
+  constructor(req: ParamInvokerData) {
     this.name = req.name;
     this.desc = req.desc;
-    this.viewInfo = viewInfo;
+    this.paramInvokerViewInfo = req.paramInvokerViewInfo;
     if (req.changeControlType === ChangeControlType.METHOD_STRING) {
+      // 赋值时是脚本字符串时, 将脚本eval赋值给genInject2VtsReqFromUser方法
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       this.genInject2VtsReqFromUser = (apply, value) => {
       };
       eval("this.genInject2VtsReqFromUser = (apply, value) => " + req.genApplyValueCommandString!);
     } else {
+      // 赋值时是用户页面创建的view组件, 目前没有用到
       const reqs: Array<ParamChangeCreateReq> = req.paramChangeCreateReqs!;
       const paramChanges: Array<ParamChange> = reqs.map(
         (r) => new ParamChange(r)
@@ -62,7 +60,6 @@ export class ParamInvoker {
           apply(paramChange.paramId, paramChange.changeWithUpper(value), paramChange.weight);
         });
       };
-
     }
   }
 }
