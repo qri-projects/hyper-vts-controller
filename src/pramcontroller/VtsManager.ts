@@ -110,7 +110,7 @@ class LockParamLoopManager {
       if (req.length > 0) {
         plugin.apiClient.injectParameterData({ parameterValues: req });
       }
-    }, 100);
+    }, 666);
   }
 
   static setLockParam(

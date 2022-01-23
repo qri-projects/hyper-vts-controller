@@ -27,7 +27,7 @@ export class ParamInvoker {
   genInject2VtsReq(value: number|string|boolean): Array<InjectParamValue> {
     const injectParamValues: Array<InjectParamValue> = [];
 
-    function apply(paramId: string, value: number, weight?: number) {
+    const apply = (paramId: string, value: number, weight?: number) => {
       injectParamValues.push(new InjectParamValue(paramId, value, weight));
     }
 

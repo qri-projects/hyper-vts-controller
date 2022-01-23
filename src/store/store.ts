@@ -102,6 +102,8 @@ const store = createStore({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       state.configurationFormData.paramInvokerData[paramInvokerValueData.key].value = paramInvokerValueData.value;
+
+      save()
     },
     setVtsConnectStatus(state, connectStatus: "connecting" | "connectedNoAuth" | "connectedAuthed" | "notStart" | "failed" | "notInit") {
       state.vtsStatus.connectStatus = connectStatus

@@ -29,18 +29,32 @@ import store from "@/store/store";
 })
 export default class ParamInvokerView extends Vue {
   paramInvoker!: ParamInvoker
-  value:Ref<UnwrapRef<string|boolean|number>> = ref(1)
+  value: Ref<UnwrapRef<string|boolean|number>> = ref(
+    1
+  )
   vts?: Plugin
   paramInvokerButtonTypes = ParamInvokerButtonType
 
   onChange(value: number | boolean | string) {
+    this.setValue(value)
+
+    store.commit("setParamInvokerValue", {key: this.paramInvoker.name, value: value})
+  }
+
+  setValue(value: number | boolean | string) {
     let req: Array<InjectParamValue> = this.paramInvoker.genInject2VtsReq(value);
     VtsManager.LockParamLoopManager.setLockParam(this.paramInvoker, req)
     if (req != null && req.length > 0) {
       this.vts?.apiClient.injectParameterData({ parameterValues: req })
     }
+  }
 
-    store.commit("setParamInvokerValue", {key: this.paramInvoker.name, paramInvokerValue: value})
+  created() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const initValue = store.state.configurationFormData.paramInvokerData[this.paramInvoker.name].value
+    this.setValue(initValue)
+    this.value = initValue
   }
 }
 </script>
