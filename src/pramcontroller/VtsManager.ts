@@ -41,19 +41,23 @@ async function connect(addressRaw: string): Promise<Plugin> {
   }
 
   return new Promise<Plugin>((resolve, reject) => {
-    const webSocket = new WebSocket(address);
-
-    webSocket.onopen = function(ev: Event) {
-      const bus = new WebSocketBus(webSocket);
-      const apiClient = new ApiClient(bus);
-      plugin = new Plugin(apiClient, "Vts超级驾驶舱dev", "B站vup: 空包糖", icon, store.state.vtsAuthToken ?? undefined);
-      loading = false;
-      store.commit("setVtsConnectStatus", store.state.vtsAuthToken ? "connectedAuthed" : "connectedNoAuth");
-      if (store.state.vtsAuthToken) {
-        handleAuthed();
+      const webSocket = new WebSocket(address);
+      webSocket.onopen = function(ev: Event) {
+        const bus = new WebSocketBus(webSocket);
+        const apiClient = new ApiClient(bus);
+        plugin = new Plugin(apiClient, "Vts超级驾驶舱dev", "B站vup: 空包糖", icon, store.state.vtsAuthToken ?? undefined);
+        loading = false;
+        store.commit("setVtsConnectStatus", store.state.vtsAuthToken ? "connectedAuthed" : "connectedNoAuth");
+        if (store.state.vtsAuthToken) {
+          handleAuthed();
+        }
+        resolve(plugin);
+      };
+      webSocket.onclose = function(ev: Event) {
+        loading = false
+        console.log("connectFailed, change status to notstart");
+        store.commit("setVtsConnectStatus", "notStart");
       }
-      resolve(plugin);
-    };
   });
 }
 
