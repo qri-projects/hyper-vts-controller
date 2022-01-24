@@ -1,29 +1,5 @@
 # hyper-vts-controller
+VtubeStudio超级驾驶舱  
 
-## Project setup
-```
-yarn install
-```
-
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+好用是蛮好用, 但感觉场景太少  
+代码写的稀烂, 不怪我, 怪vue设计的烂

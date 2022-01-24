@@ -18,7 +18,7 @@ class State {
   vtsStatus: {
     connected: boolean,
     customParams: Array<CustomParam>,
-    connectStatus:"connecting" | "connectedNoAuth" | "connectedAuthed" | "notStart" | "failed" | "notInit"
+    connectStatus: "connecting" | "connectedNoAuth" | "connectedAuthed" | "notStart" | "failed" | "notInit"
   }
 
 
