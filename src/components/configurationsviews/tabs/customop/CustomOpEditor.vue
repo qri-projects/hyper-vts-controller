@@ -55,12 +55,11 @@
         <el-form-item>
           <el-button-group>
             <el-button type="primary" @click="submit">提交</el-button>
-            <el-button >清空</el-button>
+            <el-button>清空</el-button>
           </el-button-group>
         </el-form-item>
       </ElForm>
     </el-form-item>
-
   </ElForm>
 </template>
 
@@ -69,6 +68,7 @@ import { Options, Vue } from "vue-class-component";
 import { Prop } from "vue-property-decorator";
 import { ParamInvokerButtonType, ParamInvokerData } from "@/pramcontroller/createreq/CreateReq";
 import store from "@/store/store";
+
 @Options({
   components: {}
 })

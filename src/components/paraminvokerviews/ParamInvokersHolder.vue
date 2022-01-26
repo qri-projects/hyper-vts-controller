@@ -1,5 +1,7 @@
 <template>
-  <ParamInvokerView v-for="paramInvoker of this.paramInvokers" :param-invoker="paramInvoker" :key="paramInvoker.name"/>
+  <div class="paramInvokersHolder">
+    <ParamInvokerView v-for="paramInvoker of this.paramInvokers" :param-invoker="paramInvoker" :key="paramInvoker.name"/>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,5 +31,9 @@ export default class ParamInvokersHolder extends Vue {
 </script>
 
 <style scoped>
-
+.paramInvokersHolder {
+  top: 60px;
+  position: absolute;
+  z-index: -1;
+}
 </style>

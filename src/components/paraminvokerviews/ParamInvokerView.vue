@@ -1,8 +1,17 @@
 <template>
-  <ElRadioGroup v-if="paramInvoker.paramInvokerViewInfo.buttonType === paramInvokerButtonTypes.RADIO" v-model="value" @change="onChange">
-    <ElRadio v-for="(option, key) in paramInvoker.paramInvokerViewInfo.options" :key="`${paramInvoker.name}-${key}`" :label="option">{{ option }}</ElRadio>
-  </ElRadioGroup>
-  <ElOption v-if="paramInvoker.paramInvokerViewInfo.buttonType === paramInvokerButtonTypes.SLIDER"></ElOption>
+    <el-row class="paramInvokerView">
+      <el-col :span="3">
+        <span>{{paramInvoker.name}}</span>
+      </el-col>
+      <el-col :span="21">
+        <span></span>
+        <ElRadioGroup v-if="paramInvoker.paramInvokerViewInfo.buttonType === paramInvokerButtonTypes.RADIO" v-model="value" @change="onChange">
+          <ElRadio v-for="(option, key) in paramInvoker.paramInvokerViewInfo.options" :key="`${paramInvoker.name}-${key}`" :label="option">{{ option }}</ElRadio>
+        </ElRadioGroup>
+        <ElOption v-if="paramInvoker.paramInvokerViewInfo.buttonType === paramInvokerButtonTypes.SLIDER"></ElOption>
+      </el-col>
+    </el-row>
+
 </template>
 
 <script lang="ts">
@@ -60,5 +69,10 @@ export default class ParamInvokerView extends Vue {
 </script>
 
 <style scoped>
-
+.paramInvokerView {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
 </style>
