@@ -5,18 +5,16 @@
     <ElCard class="configurationCard" v-show="switchOpen">
       <el-tabs v-model="activeTab" class="configurationTabs">
         <el-tab-pane class="configurationTabPane" label="连接VTS" name="connectVts">
-          <el-input v-model="vtsAddress">
-          </el-input>
-          <el-button @click="changeVtsAddress">连接</el-button>
-          <el-tooltip class="item" effect="dark" :content="authButtonNoticeMessage" placement="top-start">
-            <el-button @click="vtsAuth">验证</el-button>
-          </el-tooltip>
+          <ConnectVtsOpConfigurationTabView></ConnectVtsOpConfigurationTabView>
         </el-tab-pane>
         <el-tab-pane class="configurationTabPane" label="自定义参数" name="customParam">
           <CustomParamConfigurationTabView />
         </el-tab-pane>
         <el-tab-pane class="configurationTabPane" label="自定义操作" name="customOp">
           <CustomOpConfiturationTabView/>
+        </el-tab-pane>
+        <el-tab-pane class="configurationTabPane" label="配置管理" name="configManage">
+          <ConfigManagerConfigurationTabView/>
         </el-tab-pane>
       </el-tabs>
     </ElCard>
@@ -30,20 +28,23 @@ import CustomParamConfigurationTabView
   from "@/components/configurationsviews/tabs/customparam/CustomParamConfigurationTabView.vue";
 import CustomOpConfiturationTabView
   from "@/components/configurationsviews/tabs/customop/CustomOpConfiturationTabView.vue";
+import ConnectVtsOpConfigurationTabView from "@/components/configurationsviews/tabs/connectvts/ConnectVtsOpConfigurationTabView.vue";
 import VtsManager from "@/pramcontroller/VtsManager";
 import store from "@/store/store";
 import { ElMessage } from "element-plus";
+import ConfigManagerConfigurationTabView
+  from "@/components/configurationsviews/tabs/configmanager/ConfigManagerConfigurationTabView.vue";
 
 
 @Options({
   components: {
+    ConfigManagerConfigurationTabView,
     CustomParamConfigurationTabView,
-    CustomOpConfiturationTabView
+    CustomOpConfiturationTabView,
+    ConnectVtsOpConfigurationTabView
   }
 })
 export default class ConfigurationView extends Vue {
-  vtsAddress = store.state.configurationFormData.vtsAddress
-  authButtonNoticeMessage = "左上角状态为已连接未验证时, 需要点击验证. 点击验证之后, 你有5秒钟时间在VtubeStudio中点击确认按钮来加载本插件"
 
   get switchOpen() {
     return store.state.configurationPanel?.open
@@ -54,27 +55,6 @@ export default class ConfigurationView extends Vue {
   }
 
   opTab = "list";
-
-  async changeVtsAddress() {
-    try {
-      const vtsPlugin = await VtsManager.connect(this.vtsAddress)
-      store.commit("vtsConnected", this.vtsAddress)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      // passed
-    }
-  }
-
-  async vtsAuth() {
-    try {
-      await VtsManager.vtsAuth()
-    } catch (e) {
-      ElMessage.error({
-        message: e.message
-      });
-    }
-  }
 }
 </script>
 

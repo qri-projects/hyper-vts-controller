@@ -53,7 +53,7 @@ export default class CustomParamView extends Vue {
     });
 
     try {
-      let newParamRes = await (await VtsManager.getInstance()).apiClient.parameterCreation({...this.model, parameterName: this.model.name});
+      let newParamRes = await (await VtsManager.getInstance()).parameterCreation({...this.model, parameterName: this.model.name});
 
       ElMessage.success({
         message: `参数: ${newParamRes.parameterName} 创建成功!`

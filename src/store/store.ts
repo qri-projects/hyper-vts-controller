@@ -25,7 +25,9 @@ class State {
   constructor() {
     this.configurationFormData = {
       vtsAddress: "localhost:8001",
-      paramInvokerData: new Map<string, ParamInvokerData>()
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      paramInvokerData: {}
     };
     this.vtsAuthToken = ""
     this.configurationPanel = {
@@ -90,12 +92,29 @@ const store = createStore({
       state.configurationFormData.vtsAddress = vtsAddress
       save()
     },
-    setParamInvokerData(state, paramInvokerData: ParamInvokerData) {
+    setParamInvokerData(state, payLoad: {
+      name: string,
+      paramInvokerData: ParamInvokerData
+    }) {
+      console.log("setParamInvokerData, ", payLoad);
       jsSetMap(
         state.configurationFormData.paramInvokerData,
-        paramInvokerData.name,
-        paramInvokerData
+        payLoad.paramInvokerData.name,
+        payLoad.paramInvokerData
       )
+      console.log("setParamInvokerData vuex, ", state);
+      if (payLoad.name !== payLoad.paramInvokerData.name) {
+        console.log("name confict! del!");
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        delete state.configurationFormData.paramInvokerData[payLoad.name];
+      }
+      save()
+    },
+    delParamInvokerData(state, name) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      delete state.configurationFormData.paramInvokerData[name]
       save()
     },
     setParamInvokerValue(state, paramInvokerValueData: {key: string, value: string|number|boolean}) {
@@ -107,6 +126,10 @@ const store = createStore({
     },
     setVtsConnectStatus(state, connectStatus: "connecting" | "connectedNoAuth" | "connectedAuthed" | "notStart" | "failed" | "notInit") {
       state.vtsStatus.connectStatus = connectStatus
+    },
+    importConfigurationFormData(state, payload: {configurationData: Map<string, ParamInvokerData>}) {
+        state.configurationFormData.paramInvokerData = payload.configurationData;
+        save()
     }
   },
   actions: {},
