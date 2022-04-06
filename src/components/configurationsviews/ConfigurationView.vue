@@ -4,7 +4,7 @@
 
     <ElCard class="configurationCard" v-show="switchOpen">
       <el-tabs v-model="activeTab" class="configurationTabs">
-        <el-tab-pane class="configurationTabPane" label="连接VTS" name="connectVts">
+        <el-tab-pane class="configurationTabPane" label="连接VtubeStudio" name="connectVts">
           <ConnectVtsOpConfigurationTabView></ConnectVtsOpConfigurationTabView>
         </el-tab-pane>
         <el-tab-pane class="configurationTabPane" label="自定义参数" name="customParam">
@@ -15,6 +15,9 @@
         </el-tab-pane>
         <el-tab-pane class="configurationTabPane" label="配置管理" name="configManage">
           <ConfigManagerConfigurationTabView/>
+        </el-tab-pane>
+        <el-tab-pane class="configurationTabPane" label="使用手册" name="manual">
+          <ManualConfigurationTabView></ManualConfigurationTabView>
         </el-tab-pane>
       </el-tabs>
     </ElCard>
@@ -34,6 +37,7 @@ import store from "@/store/store";
 import { ElMessage } from "element-plus";
 import ConfigManagerConfigurationTabView
   from "@/components/configurationsviews/tabs/configmanager/ConfigManagerConfigurationTabView.vue";
+import ManualConfigurationTabView from "@/components/configurationsviews/tabs/manual/ManualView.vue";
 
 
 @Options({
@@ -41,7 +45,8 @@ import ConfigManagerConfigurationTabView
     ConfigManagerConfigurationTabView,
     CustomParamConfigurationTabView,
     CustomOpConfiturationTabView,
-    ConnectVtsOpConfigurationTabView
+    ConnectVtsOpConfigurationTabView,
+    ManualConfigurationTabView
   }
 })
 export default class ConfigurationView extends Vue {

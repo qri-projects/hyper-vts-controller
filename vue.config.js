@@ -9,5 +9,6 @@ module.exports = {
         resolvers: [ElementPlusResolver()],
       }),
     ],
-  }
+  },
+  publicPath: "./"
 };

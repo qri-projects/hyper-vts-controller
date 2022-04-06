@@ -1,10 +1,15 @@
 <template>
   <el-input v-model="vtsAddress">
   </el-input>
+  <div>
+    <p>连接步骤:</p>
+    <p>1. 在上方输入框中, 输入VtubeStudio插件Api的地址</p>
+    <p>2. 点击连接开始连接, 左上角状态变为已连接未校验</p>
+    <p>3. 点击验证, 并在5秒内在VtubeStudio中允许本插件连接</p>
+<!--    <p>如果还有疑问的话, 请前往视频版教程: <a href="https://www.bilibili.com/video/BV1yq4y1v7tJ" target="_blank">BV1yq4y1v7tJ</a></p>-->
+  </div>
   <el-button @click="changeVtsAddress">连接</el-button>
-  <el-tooltip class="item" effect="dark" :content="authButtonNoticeMessage" placement="top-start">
-    <el-button @click="vtsAuth">验证</el-button>
-  </el-tooltip>
+  <el-button @click="vtsAuth">验证</el-button>
 </template>
 
 <script lang="ts">
@@ -15,7 +20,6 @@ import { ElMessage } from "element-plus";
 
 export default class ConnectVtsOpConfigurationTabView extends Vue {
   vtsAddress = store.state.configurationFormData.vtsAddress
-  authButtonNoticeMessage = "左上角状态为已连接未验证时, 需要点击验证. 点击验证之后, 你有5秒钟时间在VtubeStudio中点击确认按钮来加载本插件"
 
   async changeVtsAddress() {
     try {

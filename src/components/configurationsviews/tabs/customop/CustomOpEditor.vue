@@ -19,7 +19,7 @@
 
     <el-form-item label="输入定义">
       <ElForm label-width="100px" :model="paramInvokerData.paramInvokerViewInfo">
-        <el-form-item label="参数输入方式">
+        <el-form-item label="输入方式">
           <el-radio v-model="paramInvokerData.paramInvokerViewInfo.buttonType" :label="paramInvokerInputTypes.RADIO">单选框</el-radio>
           <el-radio v-model="paramInvokerData.paramInvokerViewInfo.buttonType" :label="paramInvokerInputTypes.SLIDER">滑条</el-radio>
           <el-radio v-model="paramInvokerData.paramInvokerViewInfo.buttonType" :label="paramInvokerInputTypes.INPUT">文本输入</el-radio>
